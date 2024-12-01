@@ -3393,6 +3393,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   privateRenderer: {fileID: 514762376}
   isRightHand: 0
+  input: {fileID: 1876594645}
 --- !u!1 &525512310
 GameObject:
   m_ObjectHideFlags: 0
@@ -3817,6 +3818,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   privateRenderer: {fileID: 610198972}
   isRightHand: 1
+  input: {fileID: 1876594645}
 --- !u!1 &702497127
 GameObject:
   m_ObjectHideFlags: 0
@@ -5020,6 +5022,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbbcb4604d4ecdf409ed232be44ed443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftTrigger: 0
+  leftGrip: 0
+  rightTrigger: 0
+  rightGrip: 0
+  aButton: 0
+  bButton: 0
+  xButton: 0
+  yButton: 0
+  leftHandZone: 0
+  rightHandZone: 0
   lookDirection: {x: 0, y: 0, z: 0}
   rightHandDirection: {x: 0, y: 0, z: 0}
   leftHandDirection: {x: 0, y: 0, z: 0}
@@ -5101,6 +5113,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f77ad94afeefd4f9138d1b3d0d7b2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movementForce: 0.1
+  input: {fileID: 1876594645}
+  playerRB: {fileID: 1876594647}
+  prevAButton: 0
 --- !u!1 &2102802091
 GameObject:
   m_ObjectHideFlags: 0

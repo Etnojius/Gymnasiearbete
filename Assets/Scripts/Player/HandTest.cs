@@ -7,6 +7,8 @@ public class HandTest : MonoBehaviour
     public Renderer privateRenderer;
     [SerializeField]
     public bool isRightHand;
+    [SerializeField]
+    private InputManager input;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,11 +21,11 @@ public class HandTest : MonoBehaviour
         byte zone;
         if (isRightHand) 
         {
-            zone = InputManager.rightHandZone; 
+            zone = input.rightHandZone; 
         }
         else
         {
-            zone = InputManager.leftHandZone;
+            zone = input.leftHandZone;
         }
 
         switch (zone)
@@ -50,38 +52,38 @@ public class HandTest : MonoBehaviour
 
         if (isRightHand)
         {
-            if (InputManager.rightGrip)
+            if (input.rightGrip)
             {
                 privateRenderer.material.color = Color.red;
             }
-            if (InputManager.rightTrigger)
+            if (input.rightTrigger)
             {
                 privateRenderer.material.color = Color.white;
             }
-            if (InputManager.aButton)
+            if (input.aButton)
             {
                 privateRenderer.material.color = Color.yellow;
             }
-            if (InputManager.bButton)
+            if (input.bButton)
             {
                 privateRenderer.material.color = Color.clear;
             }
         }
         else
         {
-            if (InputManager.leftGrip)
+            if (input.leftGrip)
             {
                 privateRenderer.material.color = Color.red;
             }
-            if (InputManager.leftTrigger)
+            if (input.leftTrigger)
             {
                 privateRenderer.material.color = Color.white;
             }
-            if (InputManager.xButton)
+            if (input.xButton)
             {
                 privateRenderer.material.color = Color.yellow;
             }
-            if (InputManager.yButton)
+            if (input.yButton)
             {
                 privateRenderer.material.color = Color.clear;
             }

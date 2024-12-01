@@ -8,17 +8,17 @@ public class InputManager : MonoBehaviour
     List<InputDevice> leftHandDevices = new List<InputDevice>();
     List<InputDevice> rightHandDevices = new List<InputDevice>();
 
-    public static bool leftTrigger;
-    public static bool leftGrip;
-    public static bool rightTrigger;
-    public static bool rightGrip;
-    public static bool aButton;
-    public static bool bButton;
-    public static bool xButton;
-    public static bool yButton;
+    public bool leftTrigger;
+    public bool leftGrip;
+    public bool rightTrigger;
+    public bool rightGrip;
+    public bool aButton;
+    public bool bButton;
+    public bool xButton;
+    public bool yButton;
 
-    public static byte leftHandZone;
-    public static byte rightHandZone;
+    public byte leftHandZone;
+    public byte rightHandZone;
 
     public Vector3 lookDirection;
     public Vector3 rightHandDirection;
@@ -65,11 +65,11 @@ public class InputManager : MonoBehaviour
                     }
                     if (leftController.TryGetFeatureValue(CommonUsages.secondaryButton, out inputValue))
                     {
-                        xButton = inputValue;
+                        yButton = inputValue;
                     }
                     if (leftController.TryGetFeatureValue(CommonUsages.primaryButton, out inputValue))
                     {
-                        yButton = inputValue;
+                        xButton = inputValue;
                     }
                 }
             }
@@ -92,11 +92,11 @@ public class InputManager : MonoBehaviour
                     }
                     if (rightController.TryGetFeatureValue(CommonUsages.secondaryButton, out inputValue))
                     {
-                        aButton = inputValue;
+                        bButton = inputValue;
                     }
                     if (rightController.TryGetFeatureValue(CommonUsages.primaryButton, out inputValue))
                     {
-                        bButton = inputValue;
+                        aButton = inputValue;
                     }
                 }
             }

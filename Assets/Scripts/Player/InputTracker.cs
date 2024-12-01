@@ -21,9 +21,9 @@ public class InputTracker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (InputManager.aButton != prevAButton)
+        if (input.aButton != prevAButton)
         {
-            prevAButton = InputManager.aButton;
+            prevAButton = input.aButton;
             AButtonChange(prevAButton);
         }
     }
