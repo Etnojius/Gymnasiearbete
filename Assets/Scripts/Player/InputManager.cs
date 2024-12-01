@@ -20,6 +20,10 @@ public class InputManager : MonoBehaviour
     public static byte leftHandZone;
     public static byte rightHandZone;
 
+    public Vector3 lookDirection;
+    public Vector3 rightHandDirection;
+    public Vector3 leftHandDirection;
+
     private readonly float zoneWidth = 0.3f;
 
     public Transform headTransform;
@@ -137,6 +141,10 @@ public class InputManager : MonoBehaviour
         {
             rightHandZone += 3;
         }
+
+        lookDirection = headTransform.forward;
+        leftHandDirection = leftHandTransform.forward;
+        rightHandDirection = rightHandTransform.forward;
     }
 
     private void OnDeviceConnected(InputDevice device)
