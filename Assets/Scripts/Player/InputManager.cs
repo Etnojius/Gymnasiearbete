@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class InputManager : MonoBehaviour
 {
@@ -168,6 +169,24 @@ public class InputManager : MonoBehaviour
     private void FixCollider()
     {
         colliderTransform.transform.position = new Vector3(headTransform.position.x, transform.position.y, headTransform.position.z);
+    }
+
+    public void VibrateController(bool right, bool left)
+    {
+        if (left)
+        {
+            foreach (var controller in leftHandDevices)
+            {
+                controller.SendHapticImpulse(0, 1, 1);
+            }
+        }
+        if (right)
+        {
+            foreach (var controller in rightHandDevices)
+            {
+                controller.SendHapticImpulse(0, 1, 1);
+            }
+        }
     }
 
     private void OnDeviceConnected(InputDevice device)

@@ -49,6 +49,7 @@ public class SpellCaster : NetworkBehaviour
         {
             if (input.rightZone == 3 && input.rightGrip && input.rightZoneDuration >= magicBoltCastingTime && input.rightGripDuration >= magicBoltCastingTime)
             {
+                InputManager.Instance.VibrateController(true, false);
                 castingMagicBolt = true;
                 canCast = false;
             }

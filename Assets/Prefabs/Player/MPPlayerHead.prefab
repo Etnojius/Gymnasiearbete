@@ -195,6 +195,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canCast: 1
+  magicBolt: {fileID: 6676688965607848198, guid: 5f0c3b1ccb4d6cf4c80af1ffad4f1769,
+    type: 3}
 --- !u!1 &4715485990198779845
 GameObject:
   m_ObjectHideFlags: 0

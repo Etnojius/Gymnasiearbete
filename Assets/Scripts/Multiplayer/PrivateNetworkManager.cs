@@ -36,15 +36,16 @@ public class PrivateNetworkManager : MonoBehaviour
 
     public async void Host()
     {
+        InputManager.Instance.VibrateController(true, true);
+        connectionInterface.SetActive(false);
         string joinCode = await StartHostWithRelay();
         joinCodeOutput.text = joinCode;
-        connectionInterface.SetActive(false);
     }
 
     public async void Join()
     {
-        await StartClientWithRelay(joinCodeInput.text);
         connectionInterface.SetActive(false);
+        await StartClientWithRelay(joinCodeInput.text);
     }
 
     public async Task<string> StartHostWithRelay(int maxConnections = 5)
