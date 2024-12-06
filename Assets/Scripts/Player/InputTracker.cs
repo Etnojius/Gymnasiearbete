@@ -6,6 +6,7 @@ public class InputTracker : MonoBehaviour
 {
     public static InputTracker Instance;
 
+    private bool canJump = true;
     [SerializeField]
     private float movementForce = 100f;
     [SerializeField]
@@ -53,6 +54,7 @@ public class InputTracker : MonoBehaviour
                     {
                         prevState = CreateInputState(prevState, newInputDelay);
                         spellCaster.CastSpell(prevState);
+                        inputDelayActive = false;
                     }
                     else
                     {
@@ -63,14 +65,16 @@ public class InputTracker : MonoBehaviour
             }
             else
             {
-                inputDelayTimer -= 0;
+                inputDelayTimer -= Time.deltaTime;
             }
+            //prevState = CreateInputState(prevState, Time.deltaTime);
+            //spellCaster.CastSpell(prevState);
         }
     }
 
     private void AButtonChange(bool down)
     {
-        if (down)
+        if (down && canJump)
         {
             playerRB.velocity = Vector3.zero;
             playerRB.AddForce(input.rightHandDirection * movementForce, ForceMode.Impulse);
@@ -104,7 +108,7 @@ public class InputTracker : MonoBehaviour
 
         if (state.leftTrigger == state.prevLeftTrigger)
         {
-            state.leftTriggerDuration += timeSincePrev;
+            state.leftTriggerDuration = timeSincePrev + prev.leftTriggerDuration;
         }
         else
         {
@@ -113,7 +117,7 @@ public class InputTracker : MonoBehaviour
 
         if (state.rightTrigger == state.prevRightTrigger)
         {
-            state.rightTriggerDuration += timeSincePrev;
+            state.rightTriggerDuration = timeSincePrev + prev.rightTriggerDuration;
         }
         else
         {
@@ -122,7 +126,7 @@ public class InputTracker : MonoBehaviour
 
         if (state.leftGrip == state.prevLeftGrip)
         {
-            state.leftGripDuration += timeSincePrev;
+            state.leftGripDuration = timeSincePrev + prev.leftGripDuration;
         }
         else
         {
@@ -131,7 +135,7 @@ public class InputTracker : MonoBehaviour
 
         if (state.rightGrip == state.prevRightGrip)
         {
-            state.rightGripDuration += timeSincePrev;
+            state.rightGripDuration = timeSincePrev + prev.rightGripDuration;
         }
         else
         {
@@ -140,7 +144,7 @@ public class InputTracker : MonoBehaviour
 
         if (state.aButton == state.prevAButton)
         {
-            state.aButtonDuration += timeSincePrev;
+            state.aButtonDuration = timeSincePrev + prev.aButtonDuration;
         }
         else
         {
@@ -149,7 +153,7 @@ public class InputTracker : MonoBehaviour
 
         if (state.bButton == state.prevBButton)
         {
-            state.bButtonDuration += timeSincePrev;
+            state.bButtonDuration = timeSincePrev + prev.bButtonDuration;
         }
         else
         {
@@ -158,7 +162,7 @@ public class InputTracker : MonoBehaviour
 
         if (state.xButton == state.prevXButton)
         {
-            state.xButtonDuration += timeSincePrev;
+            state.xButtonDuration = timeSincePrev + prev.xButtonDuration;
         }
         else
         {
@@ -167,7 +171,7 @@ public class InputTracker : MonoBehaviour
 
         if (state.yButton == state.prevYButton)
         {
-            state.yButtonDuration += timeSincePrev;
+            state.yButtonDuration = timeSincePrev + prev.yButtonDuration;
         }
         else
         {
@@ -176,7 +180,7 @@ public class InputTracker : MonoBehaviour
 
         if (state.leftZone == state.prevLeftZone)
         {
-            state.leftZoneDuration += timeSincePrev;
+            state.leftZoneDuration = timeSincePrev + prev.leftZoneDuration;
         }
         else
         {
@@ -185,7 +189,7 @@ public class InputTracker : MonoBehaviour
 
         if (state.rightZone == state.prevRightZone)
         {
-            state.rightZoneDuration += timeSincePrev;
+            state.rightZoneDuration = timeSincePrev + prev.rightZoneDuration;
         }
         else
         {

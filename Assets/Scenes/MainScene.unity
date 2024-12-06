@@ -162,7 +162,6 @@ MonoBehaviour:
     Prefabs:
       NetworkPrefabsLists:
       - {fileID: 11400000, guid: 51571e05c2776fa4d8922c49a186cbbb, type: 2}
-      - {fileID: 11400000, guid: 351af5d4d23a7ba4da2b89fbe9e3cd3f, type: 2}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
@@ -237,7 +236,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   joinCodeOutput: {fileID: 1817058189}
   joinCodeInput: {fileID: 1296768991}
-  connectionInterface: {fileID: 2102802091}
+  connectionInterface: {fileID: 1996120452}
 --- !u!4 &59356341 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7979916830513711551, guid: 4dfac36245beb8e4d884a833a5a0517f,
@@ -5610,6 +5609,8 @@ MonoBehaviour:
   lookDirection: {x: 0, y: 0, z: 0}
   rightHandDirection: {x: 0, y: 0, z: 0}
   leftHandDirection: {x: 0, y: 0, z: 0}
+  rightHandMovementDirection: {x: 0, y: 0, z: 0}
+  leftHandMovementDirection: {x: 0, y: 0, z: 0}
   headTransform: {fileID: 588248203}
   leftHandTransform: {fileID: 412107855}
   rightHandTransform: {fileID: 106412823}
