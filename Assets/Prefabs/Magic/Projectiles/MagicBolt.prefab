@@ -153,7 +153,7 @@ MonoBehaviour:
   direction: {x: 0, y: 0, z: 0}
   speed: 5
   anglesPerSecond: 15
-  damage: 5
+  damage: 20
   lifeTime: 15
   ownerId: 0
   privateCollider: {fileID: 0}

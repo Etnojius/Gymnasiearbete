@@ -50,6 +50,17 @@ public class NetworkPlayer : NetworkBehaviour
         }
     }
 
+    private void TakeDamage()
+    {
+        TakeDamageRPC();
+    }
+
+    [Rpc(SendTo.Owner)]
+    private void TakeDamageRPC()
+    {
+        InputManager.Instance.VibrateController(true, true);
+    }
+
     [Rpc(SendTo.Owner)]
     private void DeathRPC()
     {
