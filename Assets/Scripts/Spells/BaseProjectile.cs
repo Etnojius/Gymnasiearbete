@@ -33,6 +33,8 @@ public class BaseProjectile : NetworkBehaviour
                     }
                 }
             }
+
+            StartCoroutine(StartCollider());
         }
         
     }
@@ -42,10 +44,10 @@ public class BaseProjectile : NetworkBehaviour
     {
         if (IsServer)
         {
-            transform.Translate(direction * speed * Time.deltaTime);
+            transform.Translate(Vector3.forward * speed * Time.deltaTime);
             if (target != null)
             {
-                transform.LookAt(Vector3.RotateTowards(transform.forward, target.transform.position, anglesPerSecond * Time.deltaTime, 0));
+                transform.LookAt(Vector3.RotateTowards(transform.forward, target.transform.position - transform.position, anglesPerSecond * Mathf.Deg2Rad * Time.deltaTime, 10));
             }
         }
     }
