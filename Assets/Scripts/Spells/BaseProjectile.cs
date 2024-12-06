@@ -26,7 +26,7 @@ public class BaseProjectile : NetworkBehaviour
             {
                 if (potentialTarget.GetComponent<NetworkObject>().NetworkObjectId != ownerId)
                 {
-                    if ((transform.position - potentialTarget.transform.position).sqrMagnitude > closest)
+                    if ((transform.position - potentialTarget.transform.position).sqrMagnitude < closest)
                     {
                         closest = (transform.position - potentialTarget.transform.position).sqrMagnitude;
                         target = potentialTarget;
@@ -47,7 +47,7 @@ public class BaseProjectile : NetworkBehaviour
             transform.Translate(Vector3.forward * speed * Time.deltaTime);
             if (target != null)
             {
-                transform.LookAt(Vector3.RotateTowards(transform.forward, target.transform.position - transform.position, anglesPerSecond * Mathf.Deg2Rad * Time.deltaTime, 10));
+                transform.LookAt(transform.position + Vector3.RotateTowards(transform.forward, target.transform.position - transform.position, anglesPerSecond * Mathf.Deg2Rad * Time.deltaTime, 0));
             }
         }
     }
