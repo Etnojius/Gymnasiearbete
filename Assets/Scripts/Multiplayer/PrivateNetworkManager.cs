@@ -10,6 +10,7 @@ using Unity.Services.Relay;
 using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
 using TMPro;
+using System;
 
 public class PrivateNetworkManager : MonoBehaviour
 {
@@ -19,10 +20,12 @@ public class PrivateNetworkManager : MonoBehaviour
     private TMP_Text joinCodeOutput;
     [SerializeField]
     private TMP_InputField joinCodeInput;
+    public GameObject connectionInterface;
     // Start is called before the first frame update
     void Start()
     {
         networkManager = GetComponent<NetworkManager>();
+        NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnected;
     }
 
     // Update is called once per frame
@@ -31,25 +34,17 @@ public class PrivateNetworkManager : MonoBehaviour
         
     }
 
-    public void StartHost()
-    {
-        networkManager.StartHost();
-    }
-
-    public void StartClient()
-    {
-        networkManager.StartClient();
-    }
-
     public async void Host()
     {
         string joinCode = await StartHostWithRelay();
         joinCodeOutput.text = joinCode;
+        connectionInterface.SetActive(false);
     }
 
     public async void Join()
     {
         await StartClientWithRelay(joinCodeInput.text);
+        connectionInterface.SetActive(false);
     }
 
     public async Task<string> StartHostWithRelay(int maxConnections = 5)
@@ -76,5 +71,10 @@ public class PrivateNetworkManager : MonoBehaviour
         var joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode: joinCode);
         NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
         return !string.IsNullOrEmpty(joinCode) && NetworkManager.Singleton.StartClient();
+    }
+
+    void HandleClientDisconnected(ulong clientId)
+    {
+        connectionInterface.SetActive(true);
     }
 }

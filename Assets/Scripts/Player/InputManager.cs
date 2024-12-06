@@ -29,6 +29,7 @@ public class InputManager : MonoBehaviour
     public Transform headTransform;
     public Transform leftHandTransform;
     public Transform rightHandTransform;
+    public Transform colliderTransform;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +45,7 @@ public class InputManager : MonoBehaviour
     {
         GetInput();
         GetControllerZones();
+        FixCollider();
     }
 
     private void GetInput()
@@ -147,6 +149,11 @@ public class InputManager : MonoBehaviour
         rightHandDirection = rightHandTransform.forward;
     }
 
+    private void FixCollider()
+    {
+        colliderTransform.transform.position = new Vector3(headTransform.position.x, transform.position.y, headTransform.position.z);
+    }
+
     private void OnDeviceConnected(InputDevice device)
     {
         if (device.characteristics.HasFlag(InputDeviceCharacteristics.HeldInHand))
@@ -174,3 +181,4 @@ public class InputManager : MonoBehaviour
         }
     }
 }
+
