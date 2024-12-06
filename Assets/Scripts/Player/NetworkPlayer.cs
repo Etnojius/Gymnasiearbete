@@ -50,8 +50,9 @@ public class NetworkPlayer : NetworkBehaviour
         }
     }
 
-    private void TakeDamage()
+    public void TakeDamage(float amount)
     {
+        hp -= amount;
         TakeDamageRPC();
     }
 

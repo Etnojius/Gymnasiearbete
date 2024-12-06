@@ -65,7 +65,7 @@ public class BaseProjectile : NetworkBehaviour
         {
             if (other.gameObject.tag == "Player")
             {
-                other.gameObject.GetComponent<NetworkPlayer>().hp -= damage;
+                other.gameObject.GetComponent<NetworkPlayer>().TakeDamage(damage);
                 NetworkObject.Despawn(true);
             }
             else
