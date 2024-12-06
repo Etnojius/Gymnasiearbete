@@ -11,11 +11,14 @@ public class BaseProjectile : NetworkBehaviour
     public float anglesPerSecond = 15;
     public float damage = 5;
     public ulong ownerId;
+    public Collider privateCollider;
     // Start is called before the first frame update
     void Start()
     {
         if (IsServer)
         {
+            privateCollider = GetComponent<Collider>();
+            privateCollider.enabled = false;
             transform.LookAt(transform.position + direction);
             var targetList = GameObject.FindGameObjectsWithTag("Player");
             float closest = Mathf.Infinity;
@@ -40,7 +43,25 @@ public class BaseProjectile : NetworkBehaviour
         if (IsServer)
         {
             transform.Translate(direction * speed * Time.deltaTime);
-            transform.LookAt(Vector3.RotateTowards(transform.forward, target.transform.position, anglesPerSecond * Time.deltaTime, 0));
+            if (target != null)
+            {
+                transform.LookAt(Vector3.RotateTowards(transform.forward, target.transform.position, anglesPerSecond * Time.deltaTime, 0));
+            }
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            collision.gameObject.GetComponent<NetworkPlayer>().hp -= damage;
+            NetworkObject.Despawn(true);
+        }
+    }
+
+    IEnumerator StartCollider()
+    {
+        yield return new WaitForSeconds(0.2f);
+        privateCollider.enabled = true;
     }
 }

@@ -9,6 +9,8 @@ public class NetworkPlayer : NetworkBehaviour
     public Transform leftHand;
     public Transform rightHand;
 
+    public float hp = 100;
+
     public Renderer[] meshToDisable;
     // Start is called before the first frame update
     public override void OnNetworkSpawn()
@@ -37,5 +39,21 @@ public class NetworkPlayer : NetworkBehaviour
             rightHand.position = VRRigReferences.Instance.rightHand.position;
             rightHand.rotation = VRRigReferences.Instance.rightHand.rotation;
         }
+
+        if (IsServer)
+        {
+            if (hp <= 0)
+            {
+                DeathRPC();
+                hp = 100;
+            }
+        }
+    }
+
+    [Rpc(SendTo.Owner)]
+    private void DeathRPC()
+    {
+        InputTracker.Instance.transform.position = new Vector3(0, 20, -45);
+        InputManager.Instance.VibrateController(true, true);
     }
 }
