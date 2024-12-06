@@ -11,12 +11,6 @@ public class SpellCaster : NetworkBehaviour
     private float magicBoltCastingTime = 0.5f;
 
     public GameObject magicBolt;
-
-    public InputState receivedInputState;
-    public byte rightZone;
-    public bool rightGrip;
-    public float rightZoneDuration;
-    public float rightGripDuration;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,7 +35,7 @@ public class SpellCaster : NetworkBehaviour
             {
                 if (!InputManager.Instance.rightGrip)
                 {
-                    CastMagicBoltRPC(InputManager.Instance.rightHandTransform.position, InputManager.Instance.rightHandMovementDirection);
+                    CastMagicBoltRPC(InputManager.Instance.rightHandTransform.position, InputManager.Instance.rightHandDirection);
                     castingMagicBolt = false;
                     canCast = true;
                 }
@@ -51,11 +45,6 @@ public class SpellCaster : NetworkBehaviour
 
     public void CastSpell(InputState input)
     {
-        receivedInputState = input;
-        rightZone = input.rightZone;
-        rightGrip = input.rightGrip;
-        rightZoneDuration = input.rightZoneDuration;
-        rightGripDuration = input.rightGripDuration;
         if (canCast)
         {
             if (input.rightZone == 3 && input.rightGrip && input.rightZoneDuration >= magicBoltCastingTime && input.rightGripDuration >= magicBoltCastingTime)
@@ -74,5 +63,6 @@ public class SpellCaster : NetworkBehaviour
         instance.direction = direction;
         instance.transform.position = position;
         instance.GetComponent<NetworkObject>().Spawn();
+        instance.ownerId = GetComponent<NetworkObject>().NetworkObjectId;
     }
 }
