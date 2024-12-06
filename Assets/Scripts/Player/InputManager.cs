@@ -5,6 +5,8 @@ using UnityEngine.XR;
 
 public class InputManager : MonoBehaviour
 {
+    public static InputManager Instance;
+
     List<InputDevice> leftHandDevices = new List<InputDevice>();
     List<InputDevice> rightHandDevices = new List<InputDevice>();
 
@@ -24,6 +26,12 @@ public class InputManager : MonoBehaviour
     public Vector3 rightHandDirection;
     public Vector3 leftHandDirection;
 
+
+    private Vector3 prevRightHandPos = Vector3.zero;
+    private Vector3 prevLeftHandPos = Vector3.zero;
+    public Vector3 rightHandMovementDirection;
+    public Vector3 leftHandMovementDirection;
+
     private readonly float zoneWidth = 0.3f;
 
     public Transform headTransform;
@@ -33,6 +41,8 @@ public class InputManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Instance = this;
+
         InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Left | InputDeviceCharacteristics.HeldInHand, leftHandDevices);
         InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Right | InputDeviceCharacteristics.HeldInHand, rightHandDevices);
 
@@ -103,6 +113,12 @@ public class InputManager : MonoBehaviour
                 }
             }
         }
+
+        leftHandMovementDirection = (leftHandTransform.position - prevLeftHandPos).normalized;
+        prevLeftHandPos = leftHandTransform.position;
+
+        rightHandMovementDirection = (rightHandTransform.position - prevRightHandPos).normalized;
+        prevRightHandPos = rightHandTransform.position;
     }
 
     private void GetControllerZones()
