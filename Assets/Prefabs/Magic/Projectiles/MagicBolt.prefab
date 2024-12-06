@@ -52,7 +52,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
@@ -122,9 +122,9 @@ MonoBehaviour:
   SyncPositionX: 1
   SyncPositionY: 1
   SyncPositionZ: 1
-  SyncRotAngleX: 0
-  SyncRotAngleY: 0
-  SyncRotAngleZ: 0
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
   SyncScaleX: 0
   SyncScaleY: 0
   SyncScaleZ: 0
@@ -154,7 +154,9 @@ MonoBehaviour:
   speed: 5
   anglesPerSecond: 15
   damage: 5
+  lifeTime: 15
   ownerId: 0
+  privateCollider: {fileID: 0}
 --- !u!1001 &3753294252314779081
 PrefabInstance:
   m_ObjectHideFlags: 0

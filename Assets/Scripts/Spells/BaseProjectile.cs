@@ -10,6 +10,7 @@ public class BaseProjectile : NetworkBehaviour
     public float speed = 5;
     public float anglesPerSecond = 15;
     public float damage = 5;
+    public float lifeTime = 15f;
     public ulong ownerId;
     public Collider privateCollider;
     // Start is called before the first frame update
@@ -49,15 +50,28 @@ public class BaseProjectile : NetworkBehaviour
             {
                 transform.LookAt(transform.position + Vector3.RotateTowards(transform.forward, target.transform.position - transform.position, anglesPerSecond * Mathf.Deg2Rad * Time.deltaTime, 0));
             }
+            lifeTime -= Time.deltaTime;
+            if (lifeTime <= 0)
+            {
+                NetworkObject.Despawn(true);
+            }
         }
     }
+    
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.tag == "Player")
+        if (IsServer)
         {
-            collision.gameObject.GetComponent<NetworkPlayer>().hp -= damage;
-            NetworkObject.Despawn(true);
+            if (other.gameObject.tag == "Player")
+            {
+                other.gameObject.GetComponent<NetworkPlayer>().hp -= damage;
+                NetworkObject.Despawn(true);
+            }
+            else
+            {
+                NetworkObject.Despawn(true);
+            }
         }
     }
 
