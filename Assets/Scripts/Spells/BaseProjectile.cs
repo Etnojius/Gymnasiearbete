@@ -91,7 +91,7 @@ public class BaseProjectile : NetworkBehaviour
                 if (shieldScript.isParry)
                 {
                     transform.Rotate(180, 0, 0);
-                    ReFire(shieldScript.ownerId);
+                    ReFire(shieldScript.ownerId.Value);
                     privateCollider.enabled = false;
                     StartCoroutine(StartCollider());
                 }

@@ -9,7 +9,18 @@ public class NetworkPlayer : NetworkBehaviour
     public Transform leftHand;
     public Transform rightHand;
 
+    public ParticleSystem innerCirclePSL;
+    public ParticleSystem middleCirclePSL;
+    public ParticleSystem outerCirclePSL;
+
+    public ParticleSystem innerCirclePSR;
+    public ParticleSystem middleCirclePSR;
+    public ParticleSystem outerCirclePSR;
+
     public NetworkVariable<float> hp = new NetworkVariable<float>(100);
+    public NetworkVariable<byte> innerCircle = new NetworkVariable<byte>(0);
+    public NetworkVariable<byte> middleCircle = new NetworkVariable<byte>(0);
+    public NetworkVariable<byte> outerCircle = new NetworkVariable<byte>(0);
     public float maxHP = 100;
 
     public Renderer[] meshToDisable;
@@ -51,6 +62,73 @@ public class NetworkPlayer : NetworkBehaviour
                 hp.Value = maxHP;
             }
         }
+
+        if (innerCircle.Value == 0)
+        {
+            innerCirclePSL.gameObject.SetActive(false);
+            innerCirclePSR.gameObject.SetActive(false);
+        }
+        else
+        {
+            innerCirclePSL.gameObject.SetActive(true);
+            var main = innerCirclePSL.main;
+            main.startColor = GetColorFromIndex(innerCircle.Value);
+            innerCirclePSR.gameObject.SetActive(true);
+            main = innerCirclePSR.main;
+            main.startColor = GetColorFromIndex(innerCircle.Value);
+        }
+        if (middleCircle.Value == 0)
+        {
+            middleCirclePSL.gameObject.SetActive(false);
+            middleCirclePSR.gameObject.SetActive(false);
+        }
+        else
+        {
+            middleCirclePSL.gameObject.SetActive(true);
+            var main = middleCirclePSL.main;
+            main.startColor = GetColorFromIndex(middleCircle.Value);
+            middleCirclePSR.gameObject.SetActive(true);
+            main = middleCirclePSR.main;
+            main.startColor = GetColorFromIndex(middleCircle.Value);
+        }
+        if (outerCircle.Value == 0)
+        {
+            outerCirclePSL.gameObject.SetActive(false);
+            outerCirclePSR.gameObject.SetActive(false);
+        }
+        else
+        {
+            outerCirclePSL.gameObject.SetActive(true);
+            var main = outerCirclePSL.main;
+            main.startColor = GetColorFromIndex(outerCircle.Value);
+            outerCirclePSR.gameObject.SetActive(true);
+            main = outerCirclePSR.main;
+            main.startColor = GetColorFromIndex(outerCircle.Value);
+        }
+    }
+
+    private Color GetColorFromIndex(byte index)
+    {
+        Color color = Color.black;
+        switch (index)
+        {
+            case 1:
+                color = Color.red;
+                break;
+            case 2:
+                color = Color.yellow;
+                break;
+            case 3:
+                color = new Color(148f / 255f, 0, 211f / 255f);
+                break;
+            case 4:
+                color = Color.green;
+                break;
+            case 5:
+                color = Color.blue;
+                break;
+        }
+        return color;
     }
 
     public void TakeDamage(float amount)

@@ -49,7 +49,17 @@ public class SpellCaster : NetworkBehaviour
     {
         if (canCast)
         {
-            if (input.rightZone == 3 && input.rightGrip && input.rightZoneDuration >= magicBoltCastingTime && input.rightGripDuration >= magicBoltCastingTime && input.rightZoneDuration >= input.rightGripDuration)
+            if (input.leftTrigger && input.leftGrip && input.rightTrigger && input.rightGrip && input.leftZone == 1 && input.rightZone == 6 && input.prevLeftZone == 4 && input.prevRightZone == 3 && input.rightZoneDuration <= castingTimingLeniency && input.leftZoneDuration <= castingTimingLeniency && input.leftGripDuration >= input.leftZoneDuration && input.leftTriggerDuration >= input.leftZoneDuration && input.rightTriggerDuration >= input.rightZoneDuration && input.rightGripDuration >= input.rightZoneDuration)
+            {
+                CastMagicCircleRPC(1);
+                InputTracker.Instance.ResetInputState();
+            }
+            else if (input.leftTrigger && input.leftGrip && input.rightTrigger && input.rightGrip && input.leftZone == 5 && input.rightZone == 5 && input.prevLeftZone == 4 && input.prevRightZone == 6 && input.rightZoneDuration <= castingTimingLeniency && input.leftZoneDuration <= castingTimingLeniency && input.leftGripDuration >= input.leftZoneDuration && input.leftTriggerDuration >= input.leftZoneDuration && input.rightTriggerDuration >= input.rightZoneDuration && input.rightGripDuration >= input.rightZoneDuration)
+            {
+                CastMagicCircleRPC(2);
+                InputTracker.Instance.ResetInputState();
+            }
+            else if (input.rightZone == 3 && input.rightGrip && input.rightZoneDuration >= magicBoltCastingTime && input.rightGripDuration >= magicBoltCastingTime && input.rightZoneDuration >= input.rightGripDuration)
             {
                 InputManager.Instance.VibrateController(true, false);
                 InputTracker.Instance.ResetInputState();
@@ -60,6 +70,11 @@ public class SpellCaster : NetworkBehaviour
             {
                 InputTracker.Instance.ResetInputState();
                 CastShieldRPC(transform.position);
+            }
+            else if (input.yButton || input.bButton)
+            {
+                CastMagicCircleRPC(0);
+                InputTracker.Instance.ResetInputState();
             }
         }
     }
@@ -79,7 +94,34 @@ public class SpellCaster : NetworkBehaviour
     {
         var instance = Instantiate(shield).GetComponent<Shield>();
         instance.transform.position = position;
-        instance.ownerId.Value = GetComponent<NetworkObject>().NetworkObjectId;
         instance.GetComponent<NetworkObject>().Spawn();
+        instance.ownerId.Value = GetComponent<NetworkObject>().NetworkObjectId;
+    }
+
+    [Rpc(SendTo.Server)]
+    private void CastMagicCircleRPC(byte index)
+    {
+        var networkPlayer = GetComponent<NetworkPlayer>();
+        if (index == 0)
+        {
+            networkPlayer.innerCircle.Value = 0;
+            networkPlayer.middleCircle.Value = 0;
+            networkPlayer.outerCircle.Value = 0;
+        }
+        else
+        {
+            if (networkPlayer.innerCircle.Value == 0)
+            {
+                networkPlayer.innerCircle.Value = index;
+            }
+            else if (networkPlayer.middleCircle.Value == 0)
+            {
+                networkPlayer.middleCircle.Value = index;
+            }
+            else if (networkPlayer.outerCircle.Value == 0)
+            {
+                networkPlayer.outerCircle.Value = index;
+            }
+        }
     }
 }
