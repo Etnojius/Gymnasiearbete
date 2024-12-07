@@ -9,7 +9,7 @@ public class NetworkPlayer : NetworkBehaviour
     public Transform leftHand;
     public Transform rightHand;
 
-    public float hp = 100;
+    public NetworkVariable<float> hp = new NetworkVariable<float>(100);
     public float maxHP = 100;
 
     public Renderer[] meshToDisable;
@@ -39,21 +39,23 @@ public class NetworkPlayer : NetworkBehaviour
 
             rightHand.position = VRRigReferences.Instance.rightHand.position;
             rightHand.rotation = VRRigReferences.Instance.rightHand.rotation;
+
+            VRRigReferences.Instance.hpMeter.fillAmount = hp.Value / maxHP;
         }
 
         if (IsServer)
         {
-            if (hp <= 0)
+            if (hp.Value <= 0)
             {
                 DeathRPC();
-                hp = maxHP;
+                hp.Value = maxHP;
             }
         }
     }
 
     public void TakeDamage(float amount)
     {
-        hp -= amount;
+        hp.Value -= amount;
         TakeDamageRPC();
     }
 

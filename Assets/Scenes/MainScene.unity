@@ -6357,6 +6357,7 @@ MonoBehaviour:
   input: {fileID: 2011234118}
   playerRB: {fileID: 2011234119}
   prevAButton: 0
+  prevXButton: 0
   newInputDelay: 0.2
   spellCaster: {fileID: 0}
 --- !u!114 &2011234118
