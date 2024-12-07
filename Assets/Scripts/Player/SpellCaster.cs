@@ -49,7 +49,7 @@ public class SpellCaster : NetworkBehaviour
     {
         if (canCast)
         {
-            if (input.rightZone == 3 && input.rightGrip && input.rightZoneDuration >= magicBoltCastingTime && input.rightGripDuration >= magicBoltCastingTime)
+            if (input.rightZone == 3 && input.rightGrip && input.rightZoneDuration >= magicBoltCastingTime && input.rightGripDuration >= magicBoltCastingTime && input.rightZoneDuration >= input.rightGripDuration)
             {
                 InputManager.Instance.VibrateController(true, false);
                 InputTracker.Instance.ResetInputState();
@@ -60,7 +60,7 @@ public class SpellCaster : NetworkBehaviour
             {
                 InputManager.Instance.VibrateController(true, true);
                 InputTracker.Instance.ResetInputState();
-                CastShieldRPC();
+                CastShieldRPC(transform.position);
             }
         }
     }
@@ -76,9 +76,10 @@ public class SpellCaster : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    private void CastShieldRPC()
+    private void CastShieldRPC(Vector3 position)
     {
         var instance = Instantiate(shield).GetComponent<Shield>();
+        instance.transform.position = position;
         instance.ownerId = GetComponent<NetworkObject>().NetworkObjectId;
         instance.GetComponent<NetworkObject>().Spawn();
     }
