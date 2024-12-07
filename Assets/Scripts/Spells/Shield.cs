@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Shield : NetworkBehaviour
 {
-    public ulong ownerId;
+    public NetworkVariable<ulong> ownerId;
     public GameObject owner;
     public float duration = 0.5f;
     public bool isParry = true;
@@ -17,7 +17,7 @@ public class Shield : NetworkBehaviour
             var targetList = GameObject.FindGameObjectsWithTag("Player");
             foreach (var potentialTarget in targetList)
             {
-                if (potentialTarget.GetComponent<NetworkObject>().NetworkObjectId == ownerId)
+                if (potentialTarget.GetComponent<NetworkObject>().NetworkObjectId == ownerId.Value)
                 {
                     owner = potentialTarget;
                     break;

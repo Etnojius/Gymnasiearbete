@@ -79,7 +79,7 @@ public class SpellCaster : NetworkBehaviour
     {
         var instance = Instantiate(shield).GetComponent<Shield>();
         instance.transform.position = position;
-        instance.ownerId = GetComponent<NetworkObject>().NetworkObjectId;
+        instance.ownerId.Value = GetComponent<NetworkObject>().NetworkObjectId;
         instance.GetComponent<NetworkObject>().Spawn();
     }
 }

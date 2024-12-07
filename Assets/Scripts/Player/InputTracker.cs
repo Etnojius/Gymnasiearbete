@@ -36,20 +36,20 @@ public class InputTracker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (input.aButton != prevAButton)
+        {
+            prevAButton = input.aButton;
+            AButtonChange(prevAButton);
+        }
+
+        if (input.xButton != prevXButton)
+        {
+            prevXButton = input.xButton;
+            XButtonChange(prevXButton);
+        }
+
         if (spellCaster != null)
         {
-            if (input.aButton != prevAButton)
-            {
-                prevAButton = input.aButton;
-                AButtonChange(prevAButton);
-            }
-
-            if (input.xButton != prevXButton)
-            {
-                prevXButton = input.xButton;
-                XButtonChange(prevXButton);
-            }
-
             //if (inputDelayTimer <= 0)
             //{
             //    if (prevState.leftTrigger == input.leftTrigger && prevState.leftGrip == input.leftGrip && prevState.rightTrigger == input.rightTrigger && prevState.rightGrip == input.rightGrip && prevState.aButton == input.aButton && prevState.bButton == input.bButton && prevState.xButton == input.xButton && prevState.yButton == input.yButton && prevState.rightZone == input.rightHandZone && prevState.leftZone == input.leftHandZone)
