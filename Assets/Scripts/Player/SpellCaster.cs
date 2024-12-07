@@ -8,12 +8,15 @@ public class SpellCaster : NetworkBehaviour
     private float castingTimingLeniency = 0.5f;
     public bool canCast = true;
     private bool castingMagicBolt = false;
+    private bool castingFlamethrower = false;
 
     private float magicBoltCastingTime = 0.5f;
 
     public GameObject magicBolt;
     public GameObject shield;
     public GameObject flamethrower;
+
+    public NetworkObject currentObject;
     // Start is called before the first frame update
     void Start()
     {
@@ -43,6 +46,15 @@ public class SpellCaster : NetworkBehaviour
                     canCast = true;
                 }
             }
+            else if (castingFlamethrower)
+            {
+                if (!InputManager.Instance.rightTrigger)
+                {
+                    DespawnCurrentObjectRPC();
+                    castingFlamethrower = false;
+                    canCast = true;
+                }
+            }
         }
     }
 
@@ -69,6 +81,8 @@ public class SpellCaster : NetworkBehaviour
             {
                 CastFlamethrowerRPC();
                 ConsumeMagicCirclesRPC();
+                canCast = false;
+                castingFlamethrower = true;
             }
             else if (input.rightZone == 3 && input.rightGrip && input.rightZoneDuration >= magicBoltCastingTime && input.rightGripDuration >= magicBoltCastingTime && input.rightZoneDuration >= input.rightGripDuration)
             {
@@ -88,6 +102,12 @@ public class SpellCaster : NetworkBehaviour
                 InputTracker.Instance.ResetInputState();
             }
         }
+    }
+
+    [Rpc(SendTo.Server)]
+    private void DespawnCurrentObjectRPC()
+    {
+        currentObject.Despawn();
     }
 
     [Rpc(SendTo.Server)]
@@ -124,6 +144,7 @@ public class SpellCaster : NetworkBehaviour
         var instance = Instantiate(flamethrower).GetComponent<Flamethrower>();
         instance.GetComponent<NetworkObject>().Spawn();
         instance.ownerId.Value = GetComponent<NetworkObject>().NetworkObjectId;
+        currentObject = instance.NetworkObject;
     }
 
     [Rpc(SendTo.Server)]
