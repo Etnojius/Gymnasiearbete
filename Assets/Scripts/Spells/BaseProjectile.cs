@@ -57,6 +57,23 @@ public class BaseProjectile : NetworkBehaviour
             }
         }
     }
+
+    public void ReFire(ulong ownerId)
+    {
+        var targetList = GameObject.FindGameObjectsWithTag("Player");
+        float closest = Mathf.Infinity;
+        foreach (var potentialTarget in targetList)
+        {
+            if (potentialTarget.GetComponent<NetworkObject>().NetworkObjectId != ownerId)
+            {
+                if ((transform.position - potentialTarget.transform.position).sqrMagnitude < closest)
+                {
+                    closest = (transform.position - potentialTarget.transform.position).sqrMagnitude;
+                    target = potentialTarget;
+                }
+            }
+        }
+    }
     
 
     private void OnTriggerEnter(Collider other)
@@ -67,6 +84,17 @@ public class BaseProjectile : NetworkBehaviour
             {
                 other.gameObject.GetComponent<NetworkPlayer>().TakeDamage(damage);
                 NetworkObject.Despawn(true);
+            }
+            else if (other.gameObject.tag == "Shield")
+            {
+                var shieldScript = other.GetComponent<Shield>();
+                if (shieldScript.isParry)
+                {
+                    transform.Rotate(180, 0, 0);
+                    ReFire(shieldScript.ownerId);
+                    privateCollider.enabled = false;
+                    StartCoroutine(StartCollider());
+                }
             }
             else
             {

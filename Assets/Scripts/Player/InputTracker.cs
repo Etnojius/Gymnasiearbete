@@ -70,6 +70,11 @@ public class InputTracker : MonoBehaviour
             //prevState = CreateInputState(prevState, Time.deltaTime);
             //spellCaster.CastSpell(prevState);
         }
+
+        if (transform.position.y < -20)
+        {
+            transform.position = new Vector3(0, 40, -45);
+        }
     }
 
     private void AButtonChange(bool down)

@@ -184,6 +184,7 @@ MonoBehaviour:
   leftHand: {fileID: 5055908892200678214}
   rightHand: {fileID: 3603375443928499699}
   hp: 100
+  maxHP: 100
   meshToDisable:
   - {fileID: 3650923079001200365}
   - {fileID: 2441851347806485967}
@@ -208,6 +209,7 @@ MonoBehaviour:
   canCast: 1
   magicBolt: {fileID: 6676688965607848198, guid: 5f0c3b1ccb4d6cf4c80af1ffad4f1769,
     type: 3}
+  shield: {fileID: 915449159300508895, guid: 458626d4dd52b1248bf289c2a0ae1b24, type: 3}
 --- !u!1 &3618152165687828052
 GameObject:
   m_ObjectHideFlags: 0

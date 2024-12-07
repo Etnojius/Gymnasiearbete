@@ -10,6 +10,7 @@ public class NetworkPlayer : NetworkBehaviour
     public Transform rightHand;
 
     public float hp = 100;
+    public float maxHP = 100;
 
     public Renderer[] meshToDisable;
     // Start is called before the first frame update
@@ -45,7 +46,7 @@ public class NetworkPlayer : NetworkBehaviour
             if (hp <= 0)
             {
                 DeathRPC();
-                hp = 100;
+                hp = maxHP;
             }
         }
     }
@@ -65,7 +66,7 @@ public class NetworkPlayer : NetworkBehaviour
     [Rpc(SendTo.Owner)]
     private void DeathRPC()
     {
-        InputTracker.Instance.transform.position = new Vector3(0, 20, -45);
+        InputTracker.Instance.transform.position = new Vector3(0, 0, 1000);
         InputManager.Instance.VibrateController(true, true);
     }
 }

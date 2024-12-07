@@ -11,6 +11,7 @@ public class SpellCaster : NetworkBehaviour
     private float magicBoltCastingTime = 0.5f;
 
     public GameObject magicBolt;
+    public GameObject shield;
     // Start is called before the first frame update
     void Start()
     {
@@ -53,6 +54,11 @@ public class SpellCaster : NetworkBehaviour
                 castingMagicBolt = true;
                 canCast = false;
             }
+            else if (input.rightZone == 3 && input.prevRightZone == 2 && input.prevLeftZone == 2 && input.leftZone == 2 && input.rightGrip && input.leftGrip)
+            {
+                InputManager.Instance.VibrateController(true, true);
+                CastShieldRPC();
+            }
         }
     }
 
@@ -64,5 +70,13 @@ public class SpellCaster : NetworkBehaviour
         instance.transform.position = position;
         instance.GetComponent<NetworkObject>().Spawn();
         instance.ownerId = GetComponent<NetworkObject>().NetworkObjectId;
+    }
+
+    [Rpc(SendTo.Server)]
+    private void CastShieldRPC()
+    {
+        var instance = Instantiate(shield).GetComponent<Shield>();
+        instance.ownerId = GetComponent<NetworkObject>().NetworkObjectId;
+        instance.GetComponent<NetworkObject>().Spawn();
     }
 }
