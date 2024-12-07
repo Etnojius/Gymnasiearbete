@@ -59,6 +59,11 @@ public class SpellCaster : NetworkBehaviour
                 CastMagicCircleRPC(2);
                 InputTracker.Instance.ResetInputState();
             }
+            else if (input.leftTrigger && input.leftGrip && input.rightTrigger && input.rightGrip && input.leftZone == 3 && input.rightZone == 1 && input.prevLeftZone == 2 && input.prevRightZone == 2 && input.rightZoneDuration <= castingTimingLeniency && input.leftZoneDuration <= castingTimingLeniency && input.leftGripDuration >= input.leftZoneDuration && input.leftTriggerDuration >= input.leftZoneDuration && input.rightTriggerDuration >= input.rightZoneDuration && input.rightGripDuration >= input.rightZoneDuration)
+            {
+                CastMagicCircleRPC(3);
+                InputTracker.Instance.ResetInputState();
+            }
             else if (input.rightZone == 3 && input.rightGrip && input.rightZoneDuration >= magicBoltCastingTime && input.rightGripDuration >= magicBoltCastingTime && input.rightZoneDuration >= input.rightGripDuration)
             {
                 InputManager.Instance.VibrateController(true, false);
@@ -77,6 +82,15 @@ public class SpellCaster : NetworkBehaviour
                 InputTracker.Instance.ResetInputState();
             }
         }
+    }
+
+    [Rpc(SendTo.Server)]
+    private void ConsumeMagicCirclesRPC()
+    {
+        var networkPlayer = GetComponent<NetworkPlayer>();
+        networkPlayer.innerCircle.Value = 0;
+        networkPlayer.middleCircle.Value = 0;
+        networkPlayer.outerCircle.Value = 0;
     }
 
     [Rpc(SendTo.Server)]

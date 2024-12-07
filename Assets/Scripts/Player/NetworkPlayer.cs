@@ -5,6 +5,8 @@ using Unity.Netcode;
 
 public class NetworkPlayer : NetworkBehaviour
 {
+    public static NetworkPlayer local;
+
     public Transform head;
     public Transform leftHand;
     public Transform rightHand;
@@ -30,6 +32,7 @@ public class NetworkPlayer : NetworkBehaviour
         base.OnNetworkSpawn();
         if (IsOwner)
         {
+            local = this;
             foreach (var item in meshToDisable)
             {
                 item.enabled = false;

@@ -135,6 +135,10 @@ public class InputTracker : MonoBehaviour
         state.leftZone = input.leftHandZone;
         state.rightZone = input.rightHandZone;
 
+        state.innerCircle = NetworkPlayer.local.innerCircle.Value;
+        state.middleCircle = NetworkPlayer.local.middleCircle.Value;
+        state.outerCircle = NetworkPlayer.local.outerCircle.Value;
+
         if (reset)
         {
             state.prevLeftTrigger = input.leftTrigger;
@@ -367,4 +371,8 @@ public struct InputState
     public byte rightZone;
     public byte prevRightZone;
     public float rightZoneDuration;
+
+    public byte innerCircle;
+    public byte middleCircle;
+    public byte outerCircle;
 }
