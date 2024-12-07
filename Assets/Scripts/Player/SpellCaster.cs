@@ -58,7 +58,6 @@ public class SpellCaster : NetworkBehaviour
             }
             else if (input.rightZone == 3 && input.prevRightZone == 2 && input.prevLeftZone == 2 && input.leftZone == 1 && input.rightGrip && input.leftGrip && input.rightZoneDuration <= castingTimingLeniency && input.leftZoneDuration <= castingTimingLeniency && input.leftGripDuration >= input.leftZoneDuration && input.rightGripDuration >= input.rightZoneDuration)
             {
-                InputManager.Instance.VibrateController(true, true);
                 InputTracker.Instance.ResetInputState();
                 CastShieldRPC(transform.position);
             }

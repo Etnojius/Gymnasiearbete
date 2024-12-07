@@ -17,6 +17,8 @@ public class InputTracker : MonoBehaviour
     public bool prevAButton = false;
     public bool prevXButton = false;
 
+    public bool waitUntilRelease = false;
+
     [SerializeField]
     private float newInputDelay = 0.2f;
     private float inputDelayTimer = 0f;
@@ -74,8 +76,19 @@ public class InputTracker : MonoBehaviour
             //{
             //    inputDelayTimer -= Time.deltaTime;
             //}
-            prevState = CreateInputState(prevState, Time.deltaTime);
-            spellCaster.CastSpell(prevState);
+
+            if (waitUntilRelease)
+            {
+                if (!(input.leftGrip || input.leftTrigger || input.rightGrip || input.rightTrigger))
+                {
+                    waitUntilRelease = false;
+                }
+            }
+            else
+            {
+                prevState = CreateInputState(prevState, Time.deltaTime);
+                spellCaster.CastSpell(prevState);
+            }
         }
 
         if (transform.position.y < -20)
@@ -87,6 +100,7 @@ public class InputTracker : MonoBehaviour
     public void ResetInputState()
     {
         prevState = CreateInputState(new InputState(), 0, true);
+        waitUntilRelease = true;
     }
 
     private void AButtonChange(bool down)
