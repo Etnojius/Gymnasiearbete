@@ -42,7 +42,7 @@ public class Flamethrower : NetworkBehaviour
     {
         if (IsServer)
         {
-            if (other.gameObject.tag == "Player")
+            if (other.gameObject.CompareTag("Player"))
             {
                 var instance = other.GetComponent<NetworkPlayer>();
                 if (instance.NetworkObjectId != ownerId.Value)
@@ -57,7 +57,7 @@ public class Flamethrower : NetworkBehaviour
     {
         if (IsServer)
         {
-            if (other.gameObject.tag == "Player")
+            if (other.gameObject.CompareTag("Player"))
             {
                 var instance = other.GetComponent<NetworkPlayer>();
                 if (playersInFire.Contains(instance))
