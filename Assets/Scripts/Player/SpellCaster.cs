@@ -13,6 +13,7 @@ public class SpellCaster : NetworkBehaviour
 
     public GameObject magicBolt;
     public GameObject shield;
+    public GameObject flamethrower;
     // Start is called before the first frame update
     void Start()
     {
@@ -64,6 +65,11 @@ public class SpellCaster : NetworkBehaviour
                 CastMagicCircleRPC(3);
                 InputTracker.Instance.ResetInputState();
             }
+            else if (input.innerCircle == 2 && input.middleCircle == 1 && input.rightZone == 3 && input.prevRightZone == 6 && input.rightTrigger && input.rightZoneDuration <= input.rightGripDuration)
+            {
+                CastFlamethrowerRPC();
+                ConsumeMagicCirclesRPC();
+            }
             else if (input.rightZone == 3 && input.rightGrip && input.rightZoneDuration >= magicBoltCastingTime && input.rightGripDuration >= magicBoltCastingTime && input.rightZoneDuration >= input.rightGripDuration)
             {
                 InputManager.Instance.VibrateController(true, false);
@@ -108,6 +114,14 @@ public class SpellCaster : NetworkBehaviour
     {
         var instance = Instantiate(shield).GetComponent<Shield>();
         instance.transform.position = position;
+        instance.GetComponent<NetworkObject>().Spawn();
+        instance.ownerId.Value = GetComponent<NetworkObject>().NetworkObjectId;
+    }
+
+    [Rpc(SendTo.Server)]
+    private void CastFlamethrowerRPC()
+    {
+        var instance = Instantiate(flamethrower).GetComponent<Flamethrower>();
         instance.GetComponent<NetworkObject>().Spawn();
         instance.ownerId.Value = GetComponent<NetworkObject>().NetworkObjectId;
     }

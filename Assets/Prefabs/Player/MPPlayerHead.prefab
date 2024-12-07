@@ -223,6 +223,8 @@ MonoBehaviour:
   magicBolt: {fileID: 6676688965607848198, guid: 5f0c3b1ccb4d6cf4c80af1ffad4f1769,
     type: 3}
   shield: {fileID: 915449159300508895, guid: 458626d4dd52b1248bf289c2a0ae1b24, type: 3}
+  flamethrower: {fileID: 6695361012998868959, guid: 84010e233bc66a041b9cb2058ee18935,
+    type: 3}
 --- !u!1 &3618152165687828052
 GameObject:
   m_ObjectHideFlags: 0
