@@ -12,6 +12,33 @@ public class Flamethrower : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (target != null)
+        {
+            transform.position = target.position;
+            transform.rotation = target.rotation;
+        }
+        else
+        {
+            FindTarget();
+        }
+
+        if (IsServer)
+        {
+            foreach(NetworkPlayer player in playersInFire)
+            {
+                player.TakeDamage(damagePerSecond * Time.deltaTime);
+            }
+        }
+    }
+
+    private void FindTarget()
+    {
         var targetList = GameObject.FindGameObjectsWithTag("Player");
         foreach (var potentialTarget in targetList)
         {
@@ -19,21 +46,6 @@ public class Flamethrower : NetworkBehaviour
             {
                 target = potentialTarget.GetComponent<NetworkPlayer>().rightHand;
                 break;
-            }
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        transform.position = target.position;
-        transform.rotation = target.rotation;
-
-        if (IsServer)
-        {
-            foreach(NetworkPlayer player in playersInFire)
-            {
-                player.TakeDamage(damagePerSecond * Time.deltaTime);
             }
         }
     }
