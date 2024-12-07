@@ -15,6 +15,7 @@ public class InputTracker : MonoBehaviour
     private Rigidbody playerRB;
 
     public bool prevAButton = false;
+    public bool prevXButton = false;
 
     [SerializeField]
     private float newInputDelay = 0.2f;
@@ -41,40 +42,51 @@ public class InputTracker : MonoBehaviour
                 AButtonChange(prevAButton);
             }
 
-            if (inputDelayTimer <= 0)
+            if (input.xButton != prevXButton)
             {
-                if (prevState.leftTrigger == input.leftTrigger && prevState.leftGrip == input.leftGrip && prevState.rightTrigger == input.rightTrigger && prevState.rightGrip == input.rightGrip && prevState.aButton == input.aButton && prevState.bButton == input.bButton && prevState.xButton == input.xButton && prevState.yButton == input.yButton && prevState.rightZone == input.rightHandZone && prevState.leftZone == input.leftHandZone)
-                {
-                    prevState = CreateInputState(prevState, Time.deltaTime);
-                    spellCaster.CastSpell(prevState);
-                }
-                else
-                {
-                    if (inputDelayActive)
-                    {
-                        prevState = CreateInputState(prevState, newInputDelay);
-                        spellCaster.CastSpell(prevState);
-                        inputDelayActive = false;
-                    }
-                    else
-                    {
-                        inputDelayTimer = newInputDelay;
-                        inputDelayActive = true;
-                    }
-                }
+                prevXButton = input.xButton;
+                XButtonChange(prevXButton);
             }
-            else
-            {
-                inputDelayTimer -= Time.deltaTime;
-            }
-            //prevState = CreateInputState(prevState, Time.deltaTime);
-            //spellCaster.CastSpell(prevState);
+
+            //if (inputDelayTimer <= 0)
+            //{
+            //    if (prevState.leftTrigger == input.leftTrigger && prevState.leftGrip == input.leftGrip && prevState.rightTrigger == input.rightTrigger && prevState.rightGrip == input.rightGrip && prevState.aButton == input.aButton && prevState.bButton == input.bButton && prevState.xButton == input.xButton && prevState.yButton == input.yButton && prevState.rightZone == input.rightHandZone && prevState.leftZone == input.leftHandZone)
+            //    {
+            //        prevState = CreateInputState(prevState, Time.deltaTime);
+            //        spellCaster.CastSpell(prevState);
+            //    }
+            //    else
+            //    {
+            //        if (inputDelayActive)
+            //        {
+            //            prevState = CreateInputState(prevState, newInputDelay);
+            //            spellCaster.CastSpell(prevState);
+            //            inputDelayActive = false;
+            //        }
+            //        else
+            //        {
+            //            inputDelayTimer = newInputDelay;
+            //            inputDelayActive = true;
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    inputDelayTimer -= Time.deltaTime;
+            //}
+            prevState = CreateInputState(prevState, Time.deltaTime);
+            spellCaster.CastSpell(prevState);
         }
 
         if (transform.position.y < -20)
         {
             transform.position = new Vector3(0, 40, -45);
         }
+    }
+
+    public void ResetInputState()
+    {
+        prevState = CreateInputState(new InputState(), 0, true);
     }
 
     private void AButtonChange(bool down)
@@ -86,7 +98,16 @@ public class InputTracker : MonoBehaviour
         }
     }
 
-    public InputState CreateInputState(InputState prev, float timeSincePrev)
+    private void XButtonChange(bool down)
+    {
+        if (down && canJump)
+        {
+            playerRB.velocity = Vector3.zero;
+            playerRB.AddForce(input.leftHandDirection * movementForce, ForceMode.Impulse);
+        }
+    }
+
+    public InputState CreateInputState(InputState prev, float timeSincePrev, bool reset = false)
     {
         InputState state = new InputState();
         state.leftTrigger = input.leftTrigger;
@@ -100,18 +121,104 @@ public class InputTracker : MonoBehaviour
         state.leftZone = input.leftHandZone;
         state.rightZone = input.rightHandZone;
 
-        state.prevLeftTrigger = prev.leftTrigger;
-        state.prevLeftGrip = prev.leftGrip;
-        state.prevRightTrigger = prev.rightTrigger;
-        state.prevRightGrip = prev.rightGrip;
-        state.prevAButton = prev.aButton;
-        state.prevBButton = prev.bButton;
-        state.prevXButton = prev.xButton;
-        state.prevYButton = prev.yButton;
-        state.prevLeftZone = prev.leftZone;
-        state.prevRightZone = prev.rightZone;
+        if (reset)
+        {
+            state.prevLeftTrigger = input.leftTrigger;
+            state.prevLeftGrip = input.leftGrip;
+            state.prevRightTrigger = input.rightTrigger;
+            state.prevRightGrip = input.rightGrip;
+            state.prevAButton = input.aButton;
+            state.prevBButton = input.bButton;
+            state.prevXButton = input.xButton;
+            state.prevYButton = input.yButton;
+            state.prevLeftZone = input.leftHandZone;
+            state.prevRightZone = input.rightHandZone;
+        }
+        else
+        {
+            if (state.leftTrigger != prev.leftTrigger)
+            {
+                state.prevLeftTrigger = prev.leftTrigger;
+            }
+            else
+            {
+                state.prevLeftTrigger = prev.prevLeftTrigger;
+            }
+            if (state.leftGrip != prev.leftGrip)
+            {
+                state.prevLeftGrip = prev.leftGrip;
+            }
+            else
+            {
+                state.prevLeftGrip = prev.prevLeftGrip;
+            }
+            if (state.leftZone != prev.leftZone)
+            {
+                state.prevLeftZone = prev.leftZone;
+            }
+            else
+            {
+                state.prevLeftZone = prev.prevLeftZone;
+            }
+            if (state.rightTrigger != prev.rightTrigger)
+            {
+                state.prevRightTrigger = prev.rightTrigger;
+            }
+            else
+            {
+                state.prevRightTrigger = prev.prevRightTrigger;
+            }
+            if (state.rightGrip != prev.rightGrip)
+            {
+                state.prevRightGrip = prev.rightGrip;
+            }
+            else
+            {
+                state.prevRightGrip = prev.prevRightGrip;
+            }
+            if (state.rightZone != prev.rightZone)
+            {
+                state.prevRightZone = prev.rightZone;
+            }
+            else
+            {
+                state.prevRightZone = prev.prevRightZone;
+            }
+            if (state.aButton != prev.aButton)
+            {
+                state.prevAButton = prev.aButton;
+            }
+            else
+            {
+                state.prevAButton = prev.prevAButton;
+            }
+            if (state.bButton != prev.bButton)
+            {
+                state.prevBButton = prev.bButton;
+            }
+            else
+            {
+                state.prevBButton = prev.prevBButton;
+            }
+            if (state.xButton != prev.xButton)
+            {
+                state.prevXButton = prev.xButton;
+            }
+            else
+            {
+                state.prevXButton = prev.prevXButton;
+            }
+            if (state.yButton != prev.yButton)
+            {
+                state.prevYButton = prev.yButton;
+            }
+            else
+            {
+                state.prevYButton = prev.prevYButton;
+            }
+        }
 
-        if (state.leftTrigger == state.prevLeftTrigger)
+        if (state.leftTrigger == prev.leftTrigger)
         {
             state.leftTriggerDuration = timeSincePrev + prev.leftTriggerDuration;
         }
@@ -120,7 +227,7 @@ public class InputTracker : MonoBehaviour
             state.leftTriggerDuration = 0;
         }
 
-        if (state.rightTrigger == state.prevRightTrigger)
+        if (state.rightTrigger == prev.rightTrigger)
         {
             state.rightTriggerDuration = timeSincePrev + prev.rightTriggerDuration;
         }
@@ -129,7 +236,7 @@ public class InputTracker : MonoBehaviour
             state.rightTriggerDuration = 0;
         }
 
-        if (state.leftGrip == state.prevLeftGrip)
+        if (state.leftGrip == prev.leftGrip)
         {
             state.leftGripDuration = timeSincePrev + prev.leftGripDuration;
         }
@@ -138,7 +245,7 @@ public class InputTracker : MonoBehaviour
             state.leftGripDuration = 0;
         }
 
-        if (state.rightGrip == state.prevRightGrip)
+        if (state.rightGrip == prev.rightGrip)
         {
             state.rightGripDuration = timeSincePrev + prev.rightGripDuration;
         }
@@ -147,7 +254,7 @@ public class InputTracker : MonoBehaviour
             state.rightGripDuration = 0;
         }
 
-        if (state.aButton == state.prevAButton)
+        if (state.aButton == prev.aButton)
         {
             state.aButtonDuration = timeSincePrev + prev.aButtonDuration;
         }
@@ -156,7 +263,7 @@ public class InputTracker : MonoBehaviour
             state.aButtonDuration = 0;
         }
 
-        if (state.bButton == state.prevBButton)
+        if (state.bButton == prev.bButton)
         {
             state.bButtonDuration = timeSincePrev + prev.bButtonDuration;
         }
@@ -165,7 +272,7 @@ public class InputTracker : MonoBehaviour
             state.bButtonDuration = 0;
         }
 
-        if (state.xButton == state.prevXButton)
+        if (state.xButton == prev.xButton)
         {
             state.xButtonDuration = timeSincePrev + prev.xButtonDuration;
         }
@@ -174,7 +281,7 @@ public class InputTracker : MonoBehaviour
             state.xButtonDuration = 0;
         }
 
-        if (state.yButton == state.prevYButton)
+        if (state.yButton == prev.yButton)
         {
             state.yButtonDuration = timeSincePrev + prev.yButtonDuration;
         }
@@ -183,7 +290,7 @@ public class InputTracker : MonoBehaviour
             state.yButtonDuration = 0;
         }
 
-        if (state.leftZone == state.prevLeftZone)
+        if (state.leftZone == prev.leftZone)
         {
             state.leftZoneDuration = timeSincePrev + prev.leftZoneDuration;
         }
@@ -192,7 +299,7 @@ public class InputTracker : MonoBehaviour
             state.leftZoneDuration = 0;
         }
 
-        if (state.rightZone == state.prevRightZone)
+        if (state.rightZone == prev.rightZone)
         {
             state.rightZoneDuration = timeSincePrev + prev.rightZoneDuration;
         }

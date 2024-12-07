@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class SpellCaster : NetworkBehaviour
 {
+    private float castingTimingLeniency = 0.5f;
     public bool canCast = true;
     private bool castingMagicBolt = false;
 
@@ -51,12 +52,14 @@ public class SpellCaster : NetworkBehaviour
             if (input.rightZone == 3 && input.rightGrip && input.rightZoneDuration >= magicBoltCastingTime && input.rightGripDuration >= magicBoltCastingTime)
             {
                 InputManager.Instance.VibrateController(true, false);
+                InputTracker.Instance.ResetInputState();
                 castingMagicBolt = true;
                 canCast = false;
             }
-            else if (input.rightZone == 3 && input.prevRightZone == 2 && input.prevLeftZone == 2 && input.leftZone == 2 && input.rightGrip && input.leftGrip)
+            else if (input.rightZone == 3 && input.prevRightZone == 2 && input.prevLeftZone == 2 && input.leftZone == 1 && input.rightGrip && input.leftGrip && input.rightZoneDuration <= castingTimingLeniency && input.leftZoneDuration <= castingTimingLeniency && input.leftGripDuration >= input.leftZoneDuration && input.rightGripDuration >= input.rightZoneDuration)
             {
                 InputManager.Instance.VibrateController(true, true);
+                InputTracker.Instance.ResetInputState();
                 CastShieldRPC();
             }
         }
