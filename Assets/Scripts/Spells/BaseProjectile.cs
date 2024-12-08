@@ -11,6 +11,9 @@ public class BaseProjectile : BaseSpell
     public float anglesPerSecond = 15;
     public float damage = 5;
     public Collider privateCollider;
+    public bool onlyTargetAir = false;
+    public float homingDelay = 0;
+    public float homingPreDelay = 0.2f;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,10 +47,18 @@ public class BaseProjectile : BaseSpell
         if (IsServer)
         {
             transform.Translate(Vector3.forward * speed * Time.deltaTime);
-            if (target != null)
+            if (target != null && !(onlyTargetAir && target.transform.position.y < 2.5f))
             {
-                transform.LookAt(transform.position + Vector3.RotateTowards(transform.forward, target.transform.position - transform.position, anglesPerSecond * Mathf.Deg2Rad * Time.deltaTime, 0));
+                if (homingDelay <= 0)
+                {
+                    transform.LookAt(transform.position + Vector3.RotateTowards(transform.forward, target.transform.position - transform.position, anglesPerSecond * Mathf.Deg2Rad * Time.deltaTime, 0));
+                }
+                else
+                {
+                    transform.LookAt(transform.position + Vector3.RotateTowards(transform.forward, target.transform.position - transform.position, anglesPerSecond * Mathf.Deg2Rad * Time.deltaTime * homingPreDelay, 0));
+                }
             }
+            homingDelay -= Time.deltaTime;
         }
     }
 

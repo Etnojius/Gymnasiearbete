@@ -30,6 +30,8 @@ public class NetworkPlayer : NetworkBehaviour
 
     public float antiGravityTime = 0f;
 
+    public bool canMove;
+
     public Renderer[] meshToDisable;
     // Start is called before the first frame update
     public override void OnNetworkSpawn()

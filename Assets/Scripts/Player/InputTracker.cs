@@ -130,14 +130,17 @@ public class InputTracker : MonoBehaviour
 
     private void Move(Vector3 direction)
     {
-        playerRB.velocity = Vector3.zero;
-        if (NetworkPlayer.local != null && NetworkPlayer.local.speedBoostTime > 0)
+        if (NetworkPlayer.local.canMove)
         {
-            playerRB.AddForce(direction * movementForce * NetworkPlayer.local.speddBoostMult, ForceMode.Impulse);
-        }
-        else
-        {
-            playerRB.AddForce(direction * movementForce, ForceMode.Impulse);
+            playerRB.velocity = Vector3.zero;
+            if (NetworkPlayer.local != null && NetworkPlayer.local.speedBoostTime > 0)
+            {
+                playerRB.AddForce(direction * movementForce * NetworkPlayer.local.speddBoostMult, ForceMode.Impulse);
+            }
+            else
+            {
+                playerRB.AddForce(direction * movementForce, ForceMode.Impulse);
+            }
         }
     }
 

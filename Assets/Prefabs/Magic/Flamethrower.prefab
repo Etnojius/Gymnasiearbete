@@ -92,9 +92,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 575f3d016760c244bb8f8c2d4c699b67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damagePerSecond: 15
   ownerId:
     m_InternalValue: 0
+  duration: 30
+  damagePerSecond: 30
 --- !u!54 &-6996018511305738984
 Rigidbody:
   m_ObjectHideFlags: 0

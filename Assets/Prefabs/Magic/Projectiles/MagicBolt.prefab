@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1409023477
+  GlobalObjectIdHash: 837630261
   InScenePlacedSourceGlobalObjectIdHash: 837630261
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -154,10 +154,13 @@ MonoBehaviour:
   duration: 15
   target: {fileID: 0}
   direction: {x: 0, y: 0, z: 0}
-  speed: 5
-  anglesPerSecond: 15
+  speed: 10
+  anglesPerSecond: 30
   damage: 20
   privateCollider: {fileID: 0}
+  onlyTargetAir: 0
+  homingDelay: 0
+  homingPreDelay: 0.2
 --- !u!1001 &3753294252314779081
 PrefabInstance:
   m_ObjectHideFlags: 0

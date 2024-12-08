@@ -151,13 +151,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ownerId:
     m_InternalValue: 0
-  duration: 15
+  duration: 30
   target: {fileID: 0}
   direction: {x: 0, y: 0, z: 0}
   speed: 10
-  anglesPerSecond: 120
+  anglesPerSecond: 360
   damage: 5
   privateCollider: {fileID: 0}
+  onlyTargetAir: 1
+  homingDelay: 3
+  homingPreDelay: 0.2
 --- !u!1001 &6411603122309136986
 PrefabInstance:
   m_ObjectHideFlags: 0
