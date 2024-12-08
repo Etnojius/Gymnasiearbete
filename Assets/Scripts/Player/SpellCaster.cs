@@ -21,6 +21,7 @@ public class SpellCaster : NetworkBehaviour
     public GameObject magicBolt;
     public GameObject shield;
     public GameObject flamethrower;
+    public GameObject battleField;
 
     public NetworkObject currentObject;
     // Start is called before the first frame update
@@ -98,6 +99,10 @@ public class SpellCaster : NetworkBehaviour
             {
                 CastShieldRPC(transform.position);
             }
+            else if (CheckInput(SpellRequirements.battlefield, input))
+            {
+                CastBattleFieldRPC(transform.position);
+            }
 
             //special cases
             else if (input.yButton || input.bButton)
@@ -137,7 +142,7 @@ public class SpellCaster : NetworkBehaviour
         instance.direction = direction;
         instance.transform.position = position;
         instance.GetComponent<NetworkObject>().Spawn();
-        instance.ownerId = GetComponent<NetworkObject>().NetworkObjectId;
+        instance.ownerId.Value = GetComponent<NetworkObject>().NetworkObjectId;
     }
 
     [Rpc(SendTo.Server)]
@@ -153,9 +158,19 @@ public class SpellCaster : NetworkBehaviour
     private void CastFlamethrowerRPC()
     {
         var instance = Instantiate(flamethrower).GetComponent<Flamethrower>();
+        instance.transform.position = new Vector3(0, -25, 0);
         instance.GetComponent<NetworkObject>().Spawn();
         instance.ownerId.Value = GetComponent<NetworkObject>().NetworkObjectId;
         currentObject = instance.NetworkObject;
+    }
+
+    [Rpc(SendTo.Server)]
+    private void CastBattleFieldRPC(Vector3 position)
+    {
+        var instance = Instantiate(battleField).GetComponent<BaseSpell>();
+        instance.transform.position = new Vector3(position.x, 0, position.z);
+        instance.NetworkObject.Spawn();
+        instance.ownerId.Value = NetworkObject.NetworkObjectId;
     }
 
     [Rpc(SendTo.Server)]

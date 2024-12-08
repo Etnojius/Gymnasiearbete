@@ -149,13 +149,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0849331a50a32a478073342685ab812, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ownerId:
+    m_InternalValue: 0
+  duration: 15
   target: {fileID: 0}
   direction: {x: 0, y: 0, z: 0}
   speed: 5
   anglesPerSecond: 15
   damage: 20
-  lifeTime: 15
-  ownerId: 0
   privateCollider: {fileID: 0}
 --- !u!1001 &3753294252314779081
 PrefabInstance:

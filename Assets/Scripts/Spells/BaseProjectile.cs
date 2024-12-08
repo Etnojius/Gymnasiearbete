@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class BaseProjectile : NetworkBehaviour
+public class BaseProjectile : BaseSpell
 {
     public GameObject target;
     public Vector3 direction;
     public float speed = 5;
     public float anglesPerSecond = 15;
     public float damage = 5;
-    public float lifeTime = 15f;
-    public ulong ownerId;
     public Collider privateCollider;
     // Start is called before the first frame update
     void Start()
@@ -25,7 +23,7 @@ public class BaseProjectile : NetworkBehaviour
             float closest = Mathf.Infinity;
             foreach (var potentialTarget in targetList)
             {
-                if (potentialTarget.GetComponent<NetworkObject>().NetworkObjectId != ownerId)
+                if (potentialTarget.GetComponent<NetworkObject>().NetworkObjectId != ownerId.Value)
                 {
                     if ((transform.position - potentialTarget.transform.position).sqrMagnitude < closest)
                     {
@@ -49,11 +47,6 @@ public class BaseProjectile : NetworkBehaviour
             if (target != null)
             {
                 transform.LookAt(transform.position + Vector3.RotateTowards(transform.forward, target.transform.position - transform.position, anglesPerSecond * Mathf.Deg2Rad * Time.deltaTime, 0));
-            }
-            lifeTime -= Time.deltaTime;
-            if (lifeTime <= 0)
-            {
-                NetworkObject.Despawn(true);
             }
         }
     }

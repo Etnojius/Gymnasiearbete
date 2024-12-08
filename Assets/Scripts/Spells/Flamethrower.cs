@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class Flamethrower : NetworkBehaviour
+public class Flamethrower : BaseSpell
 {
     public float damagePerSecond = 15f;
-    public NetworkVariable<ulong> ownerId;
     Transform target;
     List<NetworkPlayer> playersInFire = new List<NetworkPlayer>();
     // Start is called before the first frame update

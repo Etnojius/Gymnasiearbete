@@ -12,7 +12,7 @@ public class SpellRequirements
 
     public static readonly Requirements shield = new Requirements(false, true, false, true, 2, 2, 1, 3);
     public static readonly Requirements flamethrower = new Requirements(false, false, true, false, 0, 6, 0, 3, SpellCaster.yellowCircle, SpellCaster.redCircle);
-    public static readonly Requirements battlefield = new Requirements(false, true, false, true, 1, 3, 4, 6, SpellCaster.redCircle, SpellCaster.redCircle, SpellCaster.redCircle);
+    public static readonly Requirements battlefield = new Requirements(false, true, false, true, 1, 3, 4, 6, SpellCaster.purpleCircle, SpellCaster.purpleCircle, SpellCaster.purpleCircle);
 }
 
 public struct Requirements
