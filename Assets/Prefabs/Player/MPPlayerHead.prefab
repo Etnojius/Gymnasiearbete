@@ -198,6 +198,8 @@ MonoBehaviour:
   outerCircle:
     m_InternalValue: 0
   maxHP: 100
+  speedBoostTime: 0
+  speddBoostMult: 2
   meshToDisable:
   - {fileID: 3650923079001200365}
   - {fileID: 2441851347806485967}
@@ -226,6 +228,8 @@ MonoBehaviour:
   flamethrower: {fileID: 6695361012998868959, guid: 84010e233bc66a041b9cb2058ee18935,
     type: 3}
   battleField: {fileID: 7326667746983448305, guid: 7d96da99c0f9b0046badf8f56089617d,
+    type: 3}
+  spreadShot: {fileID: 5066257335964875187, guid: 1684ba735d1fd8c408ff110a295af133,
     type: 3}
   currentObject: {fileID: 0}
 --- !u!1 &3618152165687828052

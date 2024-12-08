@@ -1488,7 +1488,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3467481715
+  GlobalObjectIdHash: 2782174159
   InScenePlacedSourceGlobalObjectIdHash: 2559217840
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -1901,7 +1901,7 @@ PrefabInstance:
     - target: {fileID: 3423388300971593625, guid: 48c5715f9603c3842a353516a8baefbb,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.2
+      value: -0.3
       objectReference: {fileID: 0}
     - target: {fileID: 3423388300971593625, guid: 48c5715f9603c3842a353516a8baefbb,
         type: 3}

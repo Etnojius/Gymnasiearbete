@@ -14,6 +14,7 @@ public class SpellRequirements
     public static readonly Requirements flamethrower = new Requirements(false, false, true, false, 0, 6, 0, 3, SpellCaster.yellowCircle, SpellCaster.redCircle);
     public static readonly Requirements battlefield = new Requirements(false, true, false, true, 1, 3, 4, 6, SpellCaster.purpleCircle, SpellCaster.purpleCircle, SpellCaster.purpleCircle);
     public static readonly Requirements speedBoost = new Requirements(true, false, true, false, 2, 2, 1, 3, SpellCaster.yellowCircle, SpellCaster.greenCircle, SpellCaster.yellowCircle);
+    public static readonly Requirements SpreadShot = new Requirements(true, false, true, false, 2, 2, 1, 3, SpellCaster.yellowCircle, SpellCaster.yellowCircle, SpellCaster.yellowCircle);
 }
 
 public struct Requirements

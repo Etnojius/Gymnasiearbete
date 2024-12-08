@@ -22,6 +22,7 @@ public class SpellCaster : NetworkBehaviour
     public GameObject shield;
     public GameObject flamethrower;
     public GameObject battleField;
+    public GameObject spreadShot;
 
     public NetworkObject currentObject;
     // Start is called before the first frame update
@@ -107,6 +108,10 @@ public class SpellCaster : NetworkBehaviour
             {
                 NetworkPlayer.local.speedBoostTime = 30f;
             }
+            else if (CheckInput(SpellRequirements.SpreadShot, input))
+            {
+                CastSpreadShotRPC(transform.position, InputManager.Instance.headTransform.up, InputManager.Instance.lookDirection);
+            }
 
             //special cases
             else if (input.yButton || input.bButton)
@@ -153,6 +158,20 @@ public class SpellCaster : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
+    private void CastSpreadShotRPC(Vector3 position, Vector3 startDirection, Vector3 lookDirection) 
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            var instance = Instantiate(spreadShot).GetComponent<BaseProjectile>();
+            instance.direction = Quaternion.AngleAxis(i * 45, lookDirection) * startDirection;
+            instance.transform.Rotate(Vector3.forward, 45 * i);
+            instance.transform.position = position;
+            instance.GetComponent<NetworkObject>().Spawn();
+            instance.ownerId.Value = GetComponent<NetworkObject>().NetworkObjectId;
+        }
+    }
+
+    [Rpc(SendTo.Server)]
     private void CastShieldRPC(Vector3 position)
     {
         var instance = Instantiate(shield).GetComponent<Shield>();
@@ -178,6 +197,11 @@ public class SpellCaster : NetworkBehaviour
         instance.transform.position = new Vector3(position.x, 0, position.z);
         instance.NetworkObject.Spawn();
         instance.ownerId.Value = NetworkObject.NetworkObjectId;
+        if (ServerManager.Instance.battlefield != null)
+        {
+            ServerManager.Instance.battlefield.NetworkObject.Despawn();
+        }
+        ServerManager.Instance.battlefield = instance;
     }
 
     [Rpc(SendTo.Server)]
