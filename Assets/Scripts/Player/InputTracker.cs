@@ -107,8 +107,7 @@ public class InputTracker : MonoBehaviour
     {
         if (down && canJump)
         {
-            playerRB.velocity = Vector3.zero;
-            playerRB.AddForce(input.rightHandDirection * movementForce, ForceMode.Impulse);
+            Move(input.rightHandDirection);
         }
     }
 
@@ -116,8 +115,20 @@ public class InputTracker : MonoBehaviour
     {
         if (down && canJump)
         {
-            playerRB.velocity = Vector3.zero;
-            playerRB.AddForce(input.leftHandDirection * movementForce, ForceMode.Impulse);
+            Move(input.leftHandDirection);
+        }
+    }
+
+    private void Move(Vector3 direction)
+    {
+        playerRB.velocity = Vector3.zero;
+        if (NetworkPlayer.local.speedBoostTime > 0)
+        {
+            playerRB.AddForce(direction * movementForce * NetworkPlayer.local.speddBoostMult, ForceMode.Impulse);
+        }
+        else
+        {
+            playerRB.AddForce(direction * movementForce, ForceMode.Impulse);
         }
     }
 

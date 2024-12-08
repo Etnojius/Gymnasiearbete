@@ -103,6 +103,10 @@ public class SpellCaster : NetworkBehaviour
             {
                 CastBattleFieldRPC(transform.position);
             }
+            else if (CheckInput(SpellRequirements.speedBoost, input))
+            {
+                NetworkPlayer.local.speedBoostTime = 30f;
+            }
 
             //special cases
             else if (input.yButton || input.bButton)
@@ -123,7 +127,10 @@ public class SpellCaster : NetworkBehaviour
     [Rpc(SendTo.Server)]
     private void DespawnCurrentObjectRPC()
     {
-        currentObject.Despawn();
+        if (currentObject != null)
+        {
+            currentObject.Despawn();
+        }
     }
 
     [Rpc(SendTo.Server)]

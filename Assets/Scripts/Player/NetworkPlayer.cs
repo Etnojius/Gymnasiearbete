@@ -25,6 +25,9 @@ public class NetworkPlayer : NetworkBehaviour
     public NetworkVariable<byte> outerCircle = new NetworkVariable<byte>(0);
     public float maxHP = 100;
 
+    public float speedBoostTime = 0f;
+    public float speddBoostMult = 2f;
+
     public Renderer[] meshToDisable;
     // Start is called before the first frame update
     public override void OnNetworkSpawn()
@@ -55,6 +58,8 @@ public class NetworkPlayer : NetworkBehaviour
             rightHand.rotation = VRRigReferences.Instance.rightHand.rotation;
 
             VRRigReferences.Instance.hpMeter.fillAmount = hp.Value / maxHP;
+
+            speedBoostTime -= Time.deltaTime;
         }
 
         if (IsServer)
