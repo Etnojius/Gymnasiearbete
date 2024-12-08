@@ -165,7 +165,7 @@ public class SpellCaster : NetworkBehaviour
     [Rpc(SendTo.Server)]
     private void CastHomingBlackHoleRPC(Vector3 position, Vector3 direction)
     {
-        var instance = Instantiate(magicBolt).GetComponent<BaseProjectile>();
+        var instance = Instantiate(homingBlackHole).GetComponent<HomingAOE>();
         instance.direction = direction;
         instance.transform.position = position;
         instance.GetComponent<NetworkObject>().Spawn();
