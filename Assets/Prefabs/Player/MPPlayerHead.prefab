@@ -231,6 +231,8 @@ MonoBehaviour:
     type: 3}
   spreadShot: {fileID: 5066257335964875187, guid: 1684ba735d1fd8c408ff110a295af133,
     type: 3}
+  homingBlackHole: {fileID: 3056986611213781349, guid: 4a1e8f1e41ca516489b7d6974d0a15b2,
+    type: 3}
   currentObject: {fileID: 0}
 --- !u!1 &3618152165687828052
 GameObject:

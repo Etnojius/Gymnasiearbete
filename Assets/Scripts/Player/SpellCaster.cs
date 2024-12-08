@@ -23,6 +23,7 @@ public class SpellCaster : NetworkBehaviour
     public GameObject flamethrower;
     public GameObject battleField;
     public GameObject spreadShot;
+    public GameObject homingBlackHole;
 
     public NetworkObject currentObject;
     // Start is called before the first frame update
@@ -112,6 +113,10 @@ public class SpellCaster : NetworkBehaviour
             {
                 CastSpreadShotRPC(transform.position, InputManager.Instance.headTransform.up, InputManager.Instance.lookDirection);
             }
+            else if (CheckInput(SpellRequirements.homingBlackHole, input))
+            {
+                CastHomingBlackHoleRPC(transform.position, InputManager.Instance.lookDirection);
+            }
 
             //special cases
             else if (input.yButton || input.bButton)
@@ -149,6 +154,16 @@ public class SpellCaster : NetworkBehaviour
 
     [Rpc(SendTo.Server)]
     private void CastMagicBoltRPC(Vector3 position, Vector3 direction)
+    {
+        var instance = Instantiate(magicBolt).GetComponent<BaseProjectile>();
+        instance.direction = direction;
+        instance.transform.position = position;
+        instance.GetComponent<NetworkObject>().Spawn();
+        instance.ownerId.Value = GetComponent<NetworkObject>().NetworkObjectId;
+    }
+
+    [Rpc(SendTo.Server)]
+    private void CastHomingBlackHoleRPC(Vector3 position, Vector3 direction)
     {
         var instance = Instantiate(magicBolt).GetComponent<BaseProjectile>();
         instance.direction = direction;

@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class Flamethrower : BaseSpell
+public class Flamethrower : AOEDamage
 {
-    public float damagePerSecond = 15f;
     Transform target;
-    List<NetworkPlayer> playersInFire = new List<NetworkPlayer>();
     // Start is called before the first frame update
     void Start()
     {
@@ -15,7 +13,7 @@ public class Flamethrower : BaseSpell
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
         if (target != null)
         {
@@ -29,12 +27,11 @@ public class Flamethrower : BaseSpell
 
         if (IsServer)
         {
-            foreach(NetworkPlayer player in playersInFire)
-            {
-                player.TakeDamage(damagePerSecond * Time.deltaTime);
-            }
+            DealDamage();
         }
     }
+
+    
 
     private void FindTarget()
     {
@@ -49,33 +46,7 @@ public class Flamethrower : BaseSpell
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (IsServer)
-        {
-            if (other.gameObject.CompareTag("Player"))
-            {
-                var instance = other.GetComponent<NetworkPlayer>();
-                if (instance.NetworkObjectId != ownerId.Value)
-                {
-                    playersInFire.Add(instance);
-                }
-            }
-        }
-    }
+   
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (IsServer)
-        {
-            if (other.gameObject.CompareTag("Player"))
-            {
-                var instance = other.GetComponent<NetworkPlayer>();
-                if (playersInFire.Contains(instance))
-                {
-                    playersInFire.Remove(instance);
-                }
-            }
-        }
-    }
+   
 }
