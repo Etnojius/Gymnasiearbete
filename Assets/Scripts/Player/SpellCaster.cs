@@ -117,6 +117,10 @@ public class SpellCaster : NetworkBehaviour
             {
                 CastHomingBlackHoleRPC(transform.position, InputManager.Instance.lookDirection);
             }
+            else if (CheckInput(SpellRequirements.antiGravity, input))
+            {
+                NetworkPlayer.local.antiGravityTime = 45f;
+            }
 
             //special cases
             else if (input.yButton || input.bButton)

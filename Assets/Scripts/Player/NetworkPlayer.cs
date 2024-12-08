@@ -28,6 +28,8 @@ public class NetworkPlayer : NetworkBehaviour
     public float speedBoostTime = 0f;
     public float speddBoostMult = 2f;
 
+    public float antiGravityTime = 0f;
+
     public Renderer[] meshToDisable;
     // Start is called before the first frame update
     public override void OnNetworkSpawn()
@@ -60,6 +62,7 @@ public class NetworkPlayer : NetworkBehaviour
             VRRigReferences.Instance.hpMeter.fillAmount = hp.Value / maxHP;
 
             speedBoostTime -= Time.deltaTime;
+            antiGravityTime -= Time.deltaTime;
         }
 
         if (IsServer)

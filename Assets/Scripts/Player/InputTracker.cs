@@ -95,6 +95,15 @@ public class InputTracker : MonoBehaviour
         {
             transform.position = new Vector3(0, 40, -45);
         }
+
+        if (NetworkPlayer.local.antiGravityTime > 0)
+        {
+            playerRB.useGravity = false;
+        }
+        else
+        {
+            playerRB.useGravity = true;
+        }
     }
 
     public void ResetInputState()

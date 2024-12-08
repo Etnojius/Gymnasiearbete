@@ -16,6 +16,7 @@ public class SpellRequirements
     public static readonly Requirements speedBoost = new Requirements(true, false, true, false, 2, 2, 1, 3, SpellCaster.yellowCircle, SpellCaster.greenCircle, SpellCaster.yellowCircle);
     public static readonly Requirements SpreadShot = new Requirements(true, false, true, false, 2, 2, 1, 3, SpellCaster.yellowCircle, SpellCaster.yellowCircle, SpellCaster.yellowCircle);
     public static readonly Requirements homingBlackHole = new Requirements(false, true, false, true, 1, 3, 2, 2, SpellCaster.blueCircle, SpellCaster.redCircle, SpellCaster.blueCircle);
+    public static readonly Requirements antiGravity = new Requirements(true, false, true, false, 1, 3, 4, 6, SpellCaster.blueCircle, SpellCaster.blueCircle);
 }
 
 public struct Requirements
