@@ -115,19 +115,19 @@ public class NetworkPlayer : NetworkBehaviour
         Color color = Color.black;
         switch (index)
         {
-            case 1:
+            case SpellCaster.redCircle:
                 color = Color.red;
                 break;
-            case 2:
+            case SpellCaster.yellowCircle:
                 color = Color.yellow;
                 break;
-            case 3:
+            case SpellCaster.purpleCircle:
                 color = new Color(148f / 255f, 0, 211f / 255f);
                 break;
-            case 4:
+            case SpellCaster.greenCircle:
                 color = Color.green;
                 break;
-            case 5:
+            case SpellCaster.blueCircle:
                 color = Color.blue;
                 break;
         }

@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class SpellCaster : NetworkBehaviour
 {
+    public const byte redCircle = 1;
+    public const byte yellowCircle = 2;
+    public const byte purpleCircle = 3;
+    public const byte greenCircle = 4;
+    public const byte blueCircle = 5;
+
     private float castingTimingLeniency = 0.5f;
     public bool canCast = true;
     private bool castingMagicBolt = false;
@@ -62,27 +68,42 @@ public class SpellCaster : NetworkBehaviour
     {
         if (canCast)
         {
-            if (input.leftTrigger && input.leftGrip && input.rightTrigger && input.rightGrip && input.leftZone == 1 && input.rightZone == 6 && input.prevLeftZone == 4 && input.prevRightZone == 3 && input.rightZoneDuration <= castingTimingLeniency && input.leftZoneDuration <= castingTimingLeniency && input.leftGripDuration >= input.leftZoneDuration && input.leftTriggerDuration >= input.leftZoneDuration && input.rightTriggerDuration >= input.rightZoneDuration && input.rightGripDuration >= input.rightZoneDuration)
+            if (CheckInput(SpellRequirements.redCircle, input))
             {
-                CastMagicCircleRPC(1);
-                InputTracker.Instance.ResetInputState();
+                CastMagicCircleRPC(redCircle);
             }
-            else if (input.leftTrigger && input.leftGrip && input.rightTrigger && input.rightGrip && input.leftZone == 5 && input.rightZone == 5 && input.prevLeftZone == 4 && input.prevRightZone == 6 && input.rightZoneDuration <= castingTimingLeniency && input.leftZoneDuration <= castingTimingLeniency && input.leftGripDuration >= input.leftZoneDuration && input.leftTriggerDuration >= input.leftZoneDuration && input.rightTriggerDuration >= input.rightZoneDuration && input.rightGripDuration >= input.rightZoneDuration)
+            else if (CheckInput(SpellRequirements.yellowCircle, input))
             {
-                CastMagicCircleRPC(2);
-                InputTracker.Instance.ResetInputState();
+                CastMagicCircleRPC(yellowCircle);
             }
-            else if (input.leftTrigger && input.leftGrip && input.rightTrigger && input.rightGrip && input.leftZone == 3 && input.rightZone == 1 && input.prevLeftZone == 2 && input.prevRightZone == 2 && input.rightZoneDuration <= castingTimingLeniency && input.leftZoneDuration <= castingTimingLeniency && input.leftGripDuration >= input.leftZoneDuration && input.leftTriggerDuration >= input.leftZoneDuration && input.rightTriggerDuration >= input.rightZoneDuration && input.rightGripDuration >= input.rightZoneDuration)
+            else if (CheckInput(SpellRequirements.purpleCircle, input))
             {
-                CastMagicCircleRPC(3);
-                InputTracker.Instance.ResetInputState();
+                CastMagicCircleRPC(purpleCircle);
             }
-            else if (input.innerCircle == 2 && input.middleCircle == 1 && input.rightZone == 3 && input.prevRightZone == 6 && input.rightTrigger && input.rightZoneDuration <= input.rightGripDuration)
+            else if (CheckInput(SpellRequirements.greenCircle, input))
+            {
+                CastMagicCircleRPC(greenCircle);
+            }
+            else if (CheckInput(SpellRequirements.blueCircle, input))
+            {
+                CastMagicCircleRPC(blueCircle);
+            }
+            else if (CheckInput(SpellRequirements.flamethrower, input))
             {
                 CastFlamethrowerRPC();
-                ConsumeMagicCirclesRPC();
                 canCast = false;
                 castingFlamethrower = true;
+            }
+            else if (CheckInput(SpellRequirements.shield, input))
+            {
+                CastShieldRPC(transform.position);
+            }
+
+            //special cases
+            else if (input.yButton || input.bButton)
+            {
+                CastMagicCircleRPC(0);
+                InputTracker.Instance.ResetInputState();
             }
             else if (input.rightZone == 3 && input.rightGrip && input.rightZoneDuration >= magicBoltCastingTime && input.rightGripDuration >= magicBoltCastingTime && input.rightZoneDuration >= input.rightGripDuration)
             {
@@ -90,16 +111,6 @@ public class SpellCaster : NetworkBehaviour
                 InputTracker.Instance.ResetInputState();
                 castingMagicBolt = true;
                 canCast = false;
-            }
-            else if (input.rightZone == 3 && input.prevRightZone == 2 && input.prevLeftZone == 2 && input.leftZone == 1 && input.rightGrip && input.leftGrip && input.rightZoneDuration <= castingTimingLeniency && input.leftZoneDuration <= castingTimingLeniency && input.leftGripDuration >= input.leftZoneDuration && input.rightGripDuration >= input.rightZoneDuration)
-            {
-                InputTracker.Instance.ResetInputState();
-                CastShieldRPC(transform.position);
-            }
-            else if (input.yButton || input.bButton)
-            {
-                CastMagicCircleRPC(0);
-                InputTracker.Instance.ResetInputState();
             }
         }
     }
@@ -170,6 +181,82 @@ public class SpellCaster : NetworkBehaviour
             else if (networkPlayer.outerCircle.Value == 0)
             {
                 networkPlayer.outerCircle.Value = index;
+            }
+        }
+    }
+
+    private bool CheckInput(Requirements requirements, InputState input)
+    {
+        if (requirements.innerCircle != 0 && requirements.innerCircle != input.innerCircle)
+        {
+            return false;
+        }
+        else
+        {
+            if (requirements.middleCircle != 0 && requirements.middleCircle != input.middleCircle)
+            {
+                return false;
+            }
+            else
+            {
+                if (requirements.outerCircle != 0 && requirements.outerCircle != input.outerCircle)
+                {
+                    return false;
+                }
+                else
+                {
+                    if (requirements.leftTrigger)
+                    {
+                        if (input.leftZoneDuration > input.leftTriggerDuration || !input.leftTrigger)
+                        {
+                            return false;
+                        }
+                    }
+                    if (requirements.leftGrip)
+                    {
+                        if (input.leftZoneDuration > input.leftGripDuration || !input.leftGrip)
+                        {
+                            return false;
+                        }
+                    }
+
+                    if (requirements.rightTrigger)
+                    {
+                        if (input.rightZoneDuration > input.rightTriggerDuration || !input.rightTrigger)
+                        {
+                            return false;
+                        }
+                    }
+                    if (requirements.rightGrip)
+                    {
+                        if (input.rightZoneDuration > input.rightGripDuration || !input.rightGrip)
+                        {
+                            return false;
+                        }
+                    }
+
+                    if (requirements.leftZone != 0)
+                    {
+                        if (input.leftZone != requirements.leftZone || input.prevLeftZone != requirements.prevLeftZone)
+                        {
+                            return false;
+                        }
+                    }
+                    if (requirements.rightZone != 0)
+                    {
+                        if (input.rightZone != requirements.rightZone || input.prevRightZone != requirements.prevRightZone)
+                        {
+                            return false;
+                        }
+                    }
+
+                    if (requirements.innerCircle != 0)
+                    {
+                        ConsumeMagicCirclesRPC();
+                    }
+                    InputTracker.Instance.ResetInputState();
+                    return true;
+                }
             }
         }
     }
