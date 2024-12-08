@@ -155,7 +155,7 @@ MonoBehaviour:
   target: {fileID: 0}
   direction: {x: 0, y: 0, z: 0}
   speed: 10
-  anglesPerSecond: 60
+  anglesPerSecond: 120
   damage: 5
   privateCollider: {fileID: 0}
 --- !u!1001 &6411603122309136986
