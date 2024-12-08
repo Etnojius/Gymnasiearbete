@@ -144,6 +144,19 @@ public class NetworkPlayer : NetworkBehaviour
         return color;
     }
 
+    public void DisableMagic()
+    {
+        DisableMagicRPC();
+    }
+
+    [Rpc(SendTo.Owner)]
+    private void DisableMagicRPC()
+    {
+        speedBoostTime = 0;
+        antiGravityTime = 0;
+        canMove = true;
+    }
+
     public void TakeDamage(float amount)
     {
         hp.Value -= amount;

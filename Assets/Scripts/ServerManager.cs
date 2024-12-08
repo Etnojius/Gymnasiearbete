@@ -13,4 +13,9 @@ public class ServerManager : MonoBehaviour
     {
         Instance = this;
     }
+
+    public void CancelMagic()
+    {
+
+    }
 }
